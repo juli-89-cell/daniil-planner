@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Дневник Успеха • Даниил (5-Б класс)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f4ed;
+            color: #3a3a3a;
+            padding: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #2c3e50;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 3px;
+            text-align: left;
+        }
+
+        .kpi-panel {
+            background: #eafaf1;
+            border: 2px solid #27ae60;
+            padding: 8px 15px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .kpi-score {
+            font-size: 20px;
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-transform: uppercase;
+        }
+
+        /* Сетка расписания под Safari Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .day-card {
+            border-radius: 18px;
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .monday { background-color: #e3f2e8; }
+        .tuesday { background-color: #eae3f2; }
+        .wednesday { background-color: #e3edf8; }
+        .thursday { background-color: #faede4; }
+        .friday { background-color: #fcf4db; }
+
+        .day-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid rgba(0,0,0,0.08);
+            width: 100%;
+            padding-bottom: 5px;
+        }
+
+        .section-subtitle {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #555;
+            margin: 6px 0 3px 0;
+            width: 100%;
+        }
+
+        .lessons-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lesson-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            padding: 5px 6px;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .lesson-name {
+            font-weight: 600;
+            color: #222;
+        }
+
+        .lesson-info {
+            font-size: 8.5px;
+            color: #666;
+            margin-top: 1px;
+        }
+
+        .badge-music {
+            background-color: rgba(255, 240, 245, 0.9);
+            border-left: 3px solid #e84393;
+        }
+
+        .badge-sport {
+            background-color: rgba(255, 243, 205, 0.9);
+            border-left: 3px solid #f1c40f;
+        }
+
+        .badge-home {
+            background-color: rgba(230, 245, 230, 0.9);
+            border-left: 3px solid #27ae60;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 9.5px;
+            font-weight: 500;
+            background: rgba(255,255,255,0.75);
+            padding: 4px 6px;
+            border-radius: 6px;
+            margin-top: 3px;
+        }
+
+        .check-item label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+
+        .check-item input[type="checkbox"] {
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+        }
+
+        .check-item.checked span.task-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .check-item.checked {
+            background: rgba(0,0,0,0.04);
+        }
+
+        .points-badge {
+            background: #fff;
+            border: 1px solid #dcd6cd;
+            border-radius: 4px;
+            padding: 2px 3px;
+            font-size: 9px;
+            font-weight: 600;
+            color: #27ae60;
+            width: 34px;
+            text-align: center;
+            -webkit-appearance: none;
+        }
+
+        .delete-mini-btn {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 11px;
+            padding: 0 3px;
+        }
+
+        .day-input-box {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .day-input-box input[type="text"] {
+            flex-grow: 1;
+            padding: 5px 6px;
+            border: 1px solid #dcd6cd;
+            border-radius: 6px;
+            font-size: 10px;
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+            background: #fff;
+            -webkit-appearance: none;
+        }
+
+        .day-input-box input[type="number"] {
+            width: 38px;
+            padding: 5px 2px;
+            border: 1px solid #dcd6cd;
+            border-radius: 6px;
+            font-size: 10px;
+            text-align: center;
+            outline: none;
+            background: #fff;
+            -webkit-appearance: none;
+        }
+
+        .day-input-box button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Магазин наград */
+        .rewards-panel {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2ded4;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .rewards-info {
+            font-size: 11px;
+            line-height: 1.5;
+            color: #444;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .rewards-info li {
+            list-style-type: none;
+            background: #fdfbf7;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid #eae5dc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-title">
+            <h1>⭐ Дневник Успеха • Даниил (5-Б)</h1>
+            <p>Адаптировано для Safari • Расписание, KPI и обязанности</p>
+        </div>
+        <div class="kpi-panel">
+            <div class="kpi-score" id="kpiScore">0 баллов</div>
+            <div class="kpi-label">Всего заработано</div>
+        </div>
+    </div>
+
+    <!-- Контейнер дней недели -->
+    <div class="grid-container">
+        
+        <!-- ПОНЕДЕЛЬНИК -->
+        <div class="day-card monday">
+            <div class="day-title">Понедельник</div>
+            <div class="section-subtitle">🏫 Школа</div>
+            <div class="lessons-list">
+                <div class="lesson-item"><div class="lesson-name">Разговоры о важном</div><div class="lesson-info">08:00</div></div>
+                <div class="lesson-item"><div class="lesson-name">1. Русский язык</div><div class="lesson-info">08:40 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">2. Литература</div><div class="lesson-info">09:20 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">3. Математика</div><div class="lesson-info">10:05 • каб. 318</div></div>
+                <div class="lesson-item"><div class="lesson-name">4. История</div><div class="lesson-info">10:45 • каб. 106</div></div>
+                <div class="lesson-item"><div class="lesson-name">5. Музыка</div><div class="lesson-info">11:25 • каб. 105</div></div>
+                <div class="lesson-item"><div class="lesson-name">6. Англ. язык</div><div class="lesson-info">12:00 • каб. 315</div></div>
+            </div>
+            <div class="section-subtitle">🎵 Муз. школа</div>
+            <div class="lesson-item badge-music"><div class="lesson-name">Гитара</div><div class="lesson-info">13:30</div></div>
+            <div class="section-subtitle">⚡ Секция</div>
+            <div class="lesson-item badge-sport" style="width: 100%;">
+                <div class="lesson-name">Борьба</div><div class="lesson-info">14:30–16:00</div>
+            </div>
+            <div class="section-subtitle">🎯 KPI Дня</div>
+            <div id="kpi_mon"></div>
+            <div class="section-subtitle">🏠 Обязанности</div>
+            <div id="chores_mon"></div>
+            <div class="day-input-box">
+                <input type="text" id="input_text_mon" placeholder="Дело...">
+                <input type="number" id="input_pts_mon" value="10">
+                <button onclick="addChoreForDay('mon')">+</button>
+            </div>
+        </div>
+
+        <!-- ВТОРНИК -->
+        <div class="day-card tuesday">
+            <div class="day-title">Вторник</div>
+            <div class="section-subtitle">🏫 Школа</div>
+            <div class="lessons-list">
+                <div class="lesson-item"><div class="lesson-name">1. Физкультура</div><div class="lesson-info">08:00 • спортзал</div></div>
+                <div class="lesson-item"><div class="lesson-name">2. Русский язык</div><div class="lesson-info">08:40 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">3. История</div><div class="lesson-info">09:30 • каб. 102</div></div>
+                <div class="lesson-item"><div class="lesson-name">4. Математика</div><div class="lesson-info">10:25 • каб. 318</div></div>
+                <div class="lesson-item"><div class="lesson-name">5. Литература</div><div class="lesson-info">11:15 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">6. ОБЗР</div><div class="lesson-info">12:05 • каб. 201</div></div>
+            </div>
+            <div class="section-subtitle">🎵 Муз. школа</div>
+            <div class="lesson-item badge-music"><div class="lesson-name">Сольфеджио</div><div class="lesson-info">13:15</div></div>
+            <div class="section-subtitle">⚡ Секция</div>
+            <div class="lesson-item badge-sport" style="width: 100%;">
+                <div class="lesson-name">Борьба</div><div class="lesson-info">14:30–16:00</div>
+            </div>
+            <div class="section-subtitle">🎯 KPI Дня</div>
+            <div id="kpi_tue"></div>
+            <div class="section-subtitle">🏠 Обязанности</div>
+            <div id="chores_tue"></div>
+            <div class="day-input-box">
+                <input type="text" id="input_text_tue" placeholder="Дело...">
+                <input type="number" id="input_pts_tue" value="10">
+                <button onclick="addChoreForDay('tue')">+</button>
+            </div>
+        </div>
+
+        <!-- СРЕДА -->
+        <div class="day-card wednesday">
+            <div class="day-title">Среда</div>
+            <div class="section-subtitle">🏫 Школа</div>
+            <div class="lessons-list">
+                <div class="lesson-item"><div class="lesson-name">1. География</div><div class="lesson-info">08:00 • каб. 317</div></div>
+                <div class="lesson-item"><div class="lesson-name">2. Русский язык</div><div class="lesson-info">08:40 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">3. Труд</div><div class="lesson-info">09:30 • каб. 114</div></div>
+                <div class="lesson-item"><div class="lesson-name">4. Труд</div><div class="lesson-info">10:25 • каб. 114</div></div>
+                <div class="lesson-item"><div class="lesson-name">5. Математика</div><div class="lesson-info">11:15 • каб. 318</div></div>
+                <div class="lesson-item"><div class="lesson-name">6. Англ. язык</div><div class="lesson-info">12:05 • каб. 319</div></div>
+            </div>
+            <div class="section-subtitle" style="color: #27ae60;">✨ Свободный день</div>
+            <div class="lesson-item badge-home"><div class="lesson-name">Без борьбы!</div><div class="lesson-info">Отдых</div></div>
+            <div class="section-subtitle">🎯 KPI Дня</div>
+            <div id="kpi_wed"></div>
+            <div class="section-subtitle">🏠 Обязанности</div>
+            <div id="chores_wed"></div>
+            <div class="day-input-box">
+                <input type="text" id="input_text_wed" placeholder="Дело...">
+                <input type="number" id="input_pts_wed" value="10">
+                <button onclick="addChoreForDay('wed')">+</button>
+            </div>
+        </div>
+
+        <!-- ЧЕТВЕРГ -->
+        <div class="day-card thursday">
+            <div class="day-title">Четверг</div>
+            <div class="section-subtitle">🏫 Школа</div>
+            <div class="lessons-list">
+                <div class="lesson-item"><div class="lesson-name">1. ДНКР / Фитнес</div><div class="lesson-info">08:00 • каб. 315</div></div>
+                <div class="lesson-item"><div class="lesson-name">2. Русский язык</div><div class="lesson-info">08:40 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">3. Литература</div><div class="lesson-info">09:30 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">4. Математика</div><div class="lesson-info">10:25 • каб. 318</div></div>
+                <div class="lesson-item"><div class="lesson-name">5. ИЗО</div><div class="lesson-info">11:15 • каб. 106</div></div>
+            </div>
+            <div class="section-subtitle">🎵 Муз. школа</div>
+            <div class="lessons-list">
+                <div class="lesson-item badge-music"><div class="lesson-name">Муз. Литература</div><div class="lesson-info">13:15</div></div>
+                <div class="lesson-item badge-music"><div class="lesson-name">Гитара</div><div class="lesson-info">14:00</div></div>
+            </div>
+            <div class="section-subtitle">⚡ Секция</div>
+            <div class="lesson-item badge-sport" style="width: 100%;">
+                <div class="lesson-name">Борьба</div><div class="lesson-info">14:30–16:00</div>
+            </div>
+            <div class="section-subtitle">🎯 KPI Дня</div>
+            <div id="kpi_thu"></div>
+            <div class="section-subtitle">🏠 Обязанности</div>
+            <div id="chores_thu"></div>
+            <div class="day-input-box">
+                <input type="text" id="input_text_thu" placeholder="Дело...">
+                <input type="number" id="input_pts_thu" value="10">
+                <button onclick="addChoreForDay('thu')">+</button>
+            </div>
+        </div>
+
+        <!-- ПЯТНИЦА -->
+        <div class="day-card friday">
+            <div class="day-title">Пятница</div>
+            <div class="section-subtitle">🏫 Школа</div>
+            <div class="lessons-list">
+                <div class="lesson-item"><div class="lesson-name">1. Биология</div><div class="lesson-info">08:00 • каб. 203</div></div>
+                <div class="lesson-item"><div class="lesson-name">2. Русский язык</div><div class="lesson-info">08:40 • каб. 313</div></div>
+                <div class="lesson-item"><div class="lesson-name">3. Инф. безоп.</div><div class="lesson-info">09:30 • каб. 303</div></div>
+                <div class="lesson-item"><div class="lesson-name">4. Математика</div><div class="lesson-info">10:25 • каб. 318</div></div>
+                <div class="lesson-item"><div class="lesson-name">5. История</div><div class="lesson-info">11:15 • каб. 102</div></div>
+                <div class="lesson-item"><div class="lesson-name">6. Физкультура</div><div class="lesson-info">12:05 • спортзал</div></div>
+            </div>
+            <div class="section-subtitle">⚡ Секция</div>
+            <div class="lesson-item badge-sport" style="width: 100%;">
+                <div class="lesson-name">Борьба</div><div class="lesson-info">14:30–16:00</div>
+            </div>
+            <div class="section-subtitle">🎯 KPI Дня</div>
+            <div id="kpi_fri"></div>
+            <div class="section-subtitle">🏠 Обязанности</div>
+            <div id="chores_fri"></div>
+            <div class="day-input-box">
+                <input type="text" id="input_text_fri" placeholder="Дело...">
+                <input type="number" id="input_pts_fri" value="10">
+                <button onclick="addChoreForDay('fri')">+</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Магазин наград -->
+    <div class="rewards-panel">
+        <div class="panel-title">🎁 Магазин наград</div>
+        <ul class="rewards-info">
+            <li><span>🎮 1 час ПК / Игр</span> <strong>30 баллов</strong></li>
+            <li><span>🍕 Пицца / Фастфуд</span> <strong>80 баллов</strong></li>
+            <li><span>🎬 Поход в кино / Развлечения</span> <strong>100 баллов</strong></li>
+            <li><span>🏎️ Картинг / Выезд</span> <strong>150 баллов</strong></li>
+        </ul>
+    </div>
+
+    <script>
+        const baseKpiTemplate = [
+            { id: 'v1', text: 'Вовремя собран', points: 2, completed: false },
+            { id: 'v2', text: 'Форма и портфель', points: 2, completed: false },
+            { id: 'v3', text: 'Д/З до 20:00', points: 5, completed: false },
+            { id: 'v4', text: 'Телефон в 21:30', points: 3, completed: false }
+        ];
+
+        const defaultChores = {
+            mon: [{ id: 101, text: 'Помыть посуду', completed: false, points: 10 }],
+            tue: [{ id: 201, text: 'Вынести мусор', completed: false, points: 10 }],
+            wed: [{ id: 301, text: 'Уборка комнаты', completed: false, points: 10 }],
+            thu: [{ id: 401, text: 'Уборка ванны', completed: false, points: 10 }],
+            fri: [{ id: 501, text: 'Порядок на столе', completed: false, points: 10 }]
+        };
+
+        let daysData = JSON.parse(localStorage.getItem('dani_safari_v1')) || {
+            mon: { kpi: JSON.parse(JSON.stringify(baseKpiTemplate)), chores: [...defaultChores.mon] },
+            tue: { kpi: JSON.parse(JSON.stringify(baseKpiTemplate)), chores: [...defaultChores.tue] },
+            wed: { kpi: JSON.parse(JSON.stringify(baseKpiTemplate)), chores: [...defaultChores.wed] },
+            thu: { kpi: JSON.parse(JSON.stringify(baseKpiTemplate)), chores: [...defaultChores.thu] },
+            fri: { kpi: JSON.parse(JSON.stringify(baseKpiTemplate)), chores: [...defaultChores.fri] }
+        };
+
+        const kpiScoreEl = document.getElementById('kpiScore');
+
+        function saveData() {
+            localStorage.setItem('dani_safari_v1', JSON.stringify(daysData));
+            renderAll();
+        }
+
+        function calculateTotalScore() {
+            let total = 0;
+            Object.values(daysData).forEach(day => {
+                day.kpi.forEach(item => { if (item.completed) total += Number(item.points); });
+                day.chores.forEach(chore => { if (chore.completed) total += Number(chore.points); });
+            });
+            kpiScoreEl.textContent = total + ' баллов';
+        }
+
+        function renderDay(dayKey) {
+            const kpiContainer = document.getElementById(`kpi_${dayKey}`);
+            kpiContainer.innerHTML = '';
+            daysData[dayKey].kpi.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `check-item ${item.completed ? 'checked' : ''}`;
+                div.innerHTML = `
+                    <label>
+                        <input type="checkbox" ${item.completed ? 'checked' : ''} onclick="toggleKpi('${dayKey}', '${item.id}')">
+                        <span class="task-text">${item.text}</span>
+                    </label>
+                    <input type="number" class="points-badge" value="${item.points}" onchange="updatePoints('${dayKey}', 'kpi', '${item.id}', this.value)">
+                `;
+                kpiContainer.appendChild(div);
+            });
+
+            const choresContainer = document.getElementById(`chores_${dayKey}`);
+            choresContainer.innerHTML = '';
+            daysData[dayKey].chores.forEach(chore => {
+                const div = document.createElement('div');
+                div.className = `check-item ${chore.completed ? 'checked' : ''}`;
+                div.innerHTML = `
+                    <label>
+                        <input type="checkbox" ${chore.completed ? 'checked' : ''} onclick="toggleChore('${dayKey}', ${chore.id})">
+                        <span class="task-text">${chore.text}</span>
+                    </label>
+                    <input type="number" class="points-badge" value="${chore.points}" onchange="updatePoints('${dayKey}', 'chores', ${chore.id}, this.value)">
+                    <button class="delete-mini-btn" onclick="deleteChore('${dayKey}', ${chore.id})">✕</button>
+                `;
+                choresContainer.appendChild(div);
+            });
+        }
+
+        function toggleKpi(dayKey, itemId) {
+            daysData[dayKey].kpi = daysData[dayKey].kpi.map(i => i.id === itemId ? { ...i, completed: !i.completed } : i);
+            saveData();
+        }
+
+        function toggleChore(dayKey, choreId) {
+            daysData[dayKey].chores = daysData[dayKey].chores.map(c => c.id === choreId ? { ...c, completed: !c.completed } : c);
+            saveData();
+        }
+
+        function updatePoints(dayKey, type, itemId, newPoints) {
+            const pts = parseInt(newPoints) || 0;
+            if (type === 'kpi') {
+                daysData[dayKey].kpi = daysData[dayKey].kpi.map(i => i.id === itemId ? { ...i, points: pts } : i);
+            } else {
+                daysData[dayKey].chores = daysData[dayKey].chores.map(c => c.id == itemId ? { ...c, points: pts } : c);
+            }
+            saveData();
+        }
+
+        function addChoreForDay(dayKey) {
+            const textInput = document.getElementById(`input_text_${dayKey}`);
+            const ptsInput = document.getElementById(`input_pts_${dayKey}`);
+            const text = textInput.value.trim();
+            const points = parseInt(ptsInput.value) || 10;
+            
+            if (text === '') return;
+            daysData[dayKey].chores.push({ id: Date.now(), text, completed: false, points: points });
+            textInput.value = '';
+            saveData();
+        }
+
+        function deleteChore(dayKey, choreId) {
+            daysData[dayKey].chores = daysData[dayKey].chores.filter(c => c.id !== choreId);
+            saveData();
+        }
+
+        function renderAll() {
+            ['mon', 'tue', 'wed', 'thu', 'fri'].forEach(day => renderDay(day));
+            calculateTotalScore();
+        }
+
+        renderAll();
+    </script>
+
+</body>
+</html>
